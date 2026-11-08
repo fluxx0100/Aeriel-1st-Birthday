@@ -40,8 +40,6 @@ body {
   border-right: 1px solid #333;
 }
 
-/* TOP RACING BAR */
-
 .top-bar {
   background: var(--red);
   text-align: center;
@@ -55,14 +53,16 @@ body {
   margin: 0 8px;
 }
 
-/* HERO */
-
 .hero {
   position: relative;
   text-align: center;
   padding: 35px 18px 25px;
-  background:
-    radial-gradient(ellipse at center, #292929 0%, #111 55%, #080808 100%);
+  background: radial-gradient(
+    ellipse at center,
+    #292929 0%,
+    #111 55%,
+    #080808 100%
+  );
   overflow: hidden;
 }
 
@@ -105,8 +105,6 @@ h1 {
   line-height: 1.7;
 }
 
-/* RACING NUMBER */
-
 .racing-number {
   position: relative;
   width: 85px;
@@ -129,8 +127,6 @@ h1 {
   font-style: italic;
 }
 
-/* PHOTOS */
-
 .photo {
   width: 100%;
   display: block;
@@ -150,8 +146,6 @@ h1 {
   margin-top: 20px;
 }
 
-/* SPEED STRIPE */
-
 .speed-stripe {
   height: 7px;
   background: repeating-linear-gradient(
@@ -162,8 +156,6 @@ h1 {
     transparent 38px
   );
 }
-
-/* SECTION */
 
 .section {
   padding: 30px 20px;
@@ -201,16 +193,13 @@ h1 {
   line-height: 1.8;
 }
 
-/* EVENT DETAILS */
-
 .event-details {
   position: relative;
   border: 1px solid #3b3b3b;
   border-top: 4px solid var(--red);
   border-radius: 5px;
   padding: 25px 15px;
-  background:
-    linear-gradient(145deg, #202020, #101010);
+  background: linear-gradient(145deg, #202020, #101010);
   box-shadow: 0 10px 25px #000;
 }
 
@@ -245,8 +234,6 @@ h1 {
   margin: 15px 0;
 }
 
-/* RACE GRID */
-
 .grid-title {
   color: #888;
   font-size: 9px;
@@ -271,8 +258,6 @@ h1 {
 .start-grid div:nth-child(3n+1) {
   background: var(--red);
 }
-
-/* RSVP */
 
 .rsvp {
   padding: 30px 20px 40px;
@@ -337,17 +322,15 @@ button:disabled {
   margin-top: 18px;
   color: white;
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
-
-/* FINISH LINE */
 
 .checkered {
   height: 18px;
-  background:
-    repeating-conic-gradient(
-      #fff 0% 25%,
-      #111 0% 50%
-    ) 0 0 / 20px 20px;
+  background: repeating-conic-gradient(
+    #fff 0% 25%,
+    #111 0% 50%
+  ) 0 0 / 20px 20px;
 }
 
 .footer {
@@ -374,8 +357,6 @@ button:disabled {
   color: var(--red);
 }
 
-/* DECORATIVE FLAG */
-
 .flag {
   display: flex;
   justify-content: center;
@@ -392,7 +373,6 @@ button:disabled {
 .flag span:nth-child(even) {
   background: #222;
 }
-
 </style>
 </head>
 
@@ -424,7 +404,7 @@ button:disabled {
       <span></span><span></span><span></span>
     </div>
 
-    <img src="1.png"
+    <img src="1.jpeg"
          class="photo photo-one"
          alt="Celebrant photo">
 
@@ -450,7 +430,7 @@ button:disabled {
       Let's make this birthday one for the finish line!
     </p>
 
-    <img src="2.png"
+    <img src="2.jpeg"
          class="photo photo-two"
          alt="Celebrant photo">
 
@@ -482,7 +462,10 @@ button:disabled {
 
       <div class="detail">
         <div class="detail-label">📍 VENUE</div>
-        <strong>JOLLIBEE CUT-CUT, ANGELES CITY<br> (PORAC-ANGELES INTERSECTION)</strong>
+        <strong>
+          JOLLIBEE CUT-CUT, ANGELES CITY<br>
+          (PORAC-ANGELES INTERSECTION)
+        </strong>
       </div>
 
     </div>
@@ -518,6 +501,7 @@ button:disabled {
         id="guestName"
         placeholder="Enter your full name"
         maxlength="80"
+        autocomplete="name"
         required
       >
 
@@ -533,7 +517,7 @@ button:disabled {
 
     </form>
 
-    <div id="message"></div>
+    <div id="message" role="status" aria-live="polite"></div>
 
   </div>
 
@@ -559,24 +543,37 @@ button:disabled {
 </div>
 
 <script>
+"use strict";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyGE9QV27fEAHRZwZakEyHNj-As1i3Iwr-oeAYYurIOjD0LPZVP6oqVvgG8KUsdAAi2/exec";
+// YOUR GOOGLE APPS SCRIPT WEB APP URL
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyGE9QV27fEAHRZwZakEyHNj-As1i3Iwr-oeAYYurIOjD0LPZVP6oqVvgG8KUsdAAi2/exec";
 
+// JSONP CONNECTION
 function callScript(params, callback) {
 
-  const callbackName = "callback_" +
-    Date.now() + "_" +
-    Math.random().toString(36).slice(2);
-
-  params.callback = callbackName;
+  const callbackName =
+    "rsvpCallback_" +
+    Date.now() +
+    "_" +
+    Math.random().toString(36).substring(2, 9);
 
   const script = document.createElement("script");
 
   let completed = false;
 
   function cleanup() {
-    delete window[callbackName];
-    script.remove();
+    clearTimeout(timeout);
+
+    if (window[callbackName]) {
+      delete window[callbackName];
+    }
+
+    script.onerror = null;
+
+    if (script.parentNode) {
+      script.parentNode.removeChild(script);
+    }
   }
 
   function finish(data) {
@@ -594,17 +591,32 @@ function callScript(params, callback) {
   script.onerror = function() {
     finish({
       success: false,
-      message: "Connection error. Please try again."
+      message:
+        "Unable to connect to Google Apps Script. Check your deployment and URL."
     });
   };
 
-  script.src = SCRIPT_URL + "?" +
-    new URLSearchParams(params).toString();
+  const query = new URLSearchParams({
+    ...params,
+    callback: callbackName,
+    _t: Date.now()
+  });
+
+  script.src = SCRIPT_URL + "?" + query.toString();
+  script.async = true;
+
+  const timeout = setTimeout(function() {
+    finish({
+      success: false,
+      message:
+        "The server did not respond in time. Please try again."
+    });
+  }, 20000);
 
   document.body.appendChild(script);
-
 }
 
+// RSVP SUBMISSION
 document.getElementById("rsvpForm")
 .addEventListener("submit", function(e) {
 
@@ -625,12 +637,20 @@ document.getElementById("rsvpForm")
     .getElementById("message");
 
   if (!name || !attendance) {
+    message.textContent =
+      "Please enter your name and select your response.";
+    return;
+  }
+
+  if (name.length > 80) {
+    message.textContent =
+      "Your name must be 80 characters or fewer.";
     return;
   }
 
   button.disabled = true;
   button.textContent = "SUBMITTING...";
-  message.textContent = "";
+  message.textContent = "Sending your RSVP...";
 
   callScript({
 
@@ -640,7 +660,7 @@ document.getElementById("rsvpForm")
 
   }, function(data) {
 
-    if (data && data.success) {
+    if (data && data.success === true) {
 
       message.textContent =
         "🏁 Your response has been recorded. Thank you!";
@@ -650,8 +670,9 @@ document.getElementById("rsvpForm")
     } else {
 
       message.textContent =
-        (data && data.message) ||
-        "Something went wrong. Please try again.";
+        (data && data.message)
+          ? data.message
+          : "Something went wrong. Please try again.";
 
     }
 
@@ -661,7 +682,6 @@ document.getElementById("rsvpForm")
   });
 
 });
-
 </script>
 
 </body>
