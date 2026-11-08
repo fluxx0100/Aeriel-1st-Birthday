@@ -1,0 +1,892 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<title>Race Control | Admin Dashboard</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --red: #e10613;
+  --dark: #080808;
+  --panel: #171717;
+  --green: #35d07f;
+}
+
+body {
+  background: var(--dark);
+  color: white;
+  font-family: Arial, sans-serif;
+  padding: 15px;
+}
+
+.phone {
+  max-width: 430px;
+  width: 100%;
+  margin: auto;
+}
+
+/* HEADER */
+
+.header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #e10613, #85000a);
+  padding: 25px 15px;
+  border-radius: 8px;
+  text-align: center;
+  border-bottom: 4px solid white;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  top: 0;
+  left: -50px;
+  background: white;
+  opacity: .08;
+  transform: skew(-25deg);
+}
+
+.header h1 {
+  position: relative;
+  font-size: 26px;
+  font-style: italic;
+  font-weight: 900;
+}
+
+.header p {
+  position: relative;
+  font-size: 10px;
+  letter-spacing: 3px;
+  margin-top: 8px;
+}
+
+/* CHECKERED FLAG */
+
+.checkered {
+  height: 12px;
+  margin-top: 12px;
+  background:
+    repeating-conic-gradient(
+      white 0% 25%,
+      #222 0% 50%
+    ) 0 0 / 16px 16px;
+}
+
+/* PANELS */
+
+.panel {
+  background: var(--panel);
+  border: 1px solid #333;
+  border-top: 3px solid var(--red);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 15px;
+  box-shadow: 0 8px 20px #0005;
+}
+
+h2 {
+  font-size: 16px;
+  margin-bottom: 18px;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+/* PASSWORD */
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #444;
+  background: #090909;
+  color: white;
+  border-radius: 5px;
+  font-size: 15px;
+  margin-bottom: 10px;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--red);
+}
+
+.password-wrapper input {
+  padding-right: 55px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 43px;
+  height: 43px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: white;
+  font-size: 20px;
+  border: none;
+  box-shadow: none;
+  transform: none;
+  cursor: pointer;
+}
+
+.toggle-password:active {
+  transform: none;
+  box-shadow: none;
+}
+
+/* BUTTONS */
+
+button {
+  width: 100%;
+  padding: 15px;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 0 4px 0 #740008;
+}
+
+button:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #740008;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* LOGIN MESSAGE */
+
+#message {
+  font-size: 13px;
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+#message.success {
+  color: var(--green);
+}
+
+#message.error {
+  color: #ff5555;
+}
+
+/* DASHBOARD */
+
+#dashboard {
+  display: none;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.stat {
+  background: #222;
+  padding: 18px 10px;
+  border-radius: 6px;
+  text-align: center;
+  border-bottom: 2px solid #444;
+}
+
+.stat strong {
+  display: block;
+  font-size: 30px;
+  margin-bottom: 7px;
+  font-style: italic;
+}
+
+.stat span {
+  color: #aaa;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.green {
+  color: var(--green);
+}
+
+.red {
+  color: #ff5555;
+}
+
+/* GUEST LIST */
+
+.guest {
+  background: #222;
+  padding: 14px;
+  border-radius: 5px;
+  margin-top: 9px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  border-left: 3px solid #555;
+}
+
+.status {
+  font-weight: bold;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+.yes {
+  color: var(--green);
+}
+
+.no {
+  color: #ff5555;
+}
+
+.top-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.top-actions button {
+  flex: 1;
+  font-size: 10px;
+  padding: 13px 5px;
+}
+
+.small {
+  color: #888;
+  font-size: 11px;
+  text-align: center;
+  margin-top: 18px;
+}
+
+/* FOOTER */
+
+.back {
+  display: block;
+  color: #aaa;
+  text-align: center;
+  margin-top: 25px;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.back:hover {
+  color: var(--red);
+}
+
+.footer {
+  color: #555;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 2px;
+  margin-top: 25px;
+  padding-bottom: 20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+
+  <!-- HEADER -->
+
+  <div class="header">
+    <h1>🏁 RACE CONTROL</h1>
+    <p>CELEBRATION ADMIN DASHBOARD</p>
+  </div>
+
+  <div class="checkered"></div>
+
+  <!-- LOGIN PANEL -->
+
+  <div class="panel" id="loginPanel">
+
+    <h2>🔐 ADMIN LOGIN</h2>
+
+    <div class="password-wrapper">
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter admin password"
+        autocomplete="current-password"
+      >
+
+      <button
+        type="button"
+        class="toggle-password"
+        id="togglePassword"
+        onclick="togglePasswordVisibility()"
+        aria-label="Show password"
+      >
+        👁
+      </button>
+
+    </div>
+
+    <button
+      type="button"
+      id="loginButton"
+      onclick="login()"
+    >
+      ACCESS DASHBOARD 🏁
+    </button>
+
+    <div id="message" role="status" aria-live="polite"></div>
+
+  </div>
+
+  <!-- DASHBOARD -->
+
+  <div id="dashboard">
+
+    <!-- STATISTICS -->
+
+    <div class="panel">
+
+      <h2>📊 ATTENDANCE OVERVIEW</h2>
+
+      <div class="stats">
+
+        <div class="stat">
+          <strong id="total">0</strong>
+          <span>TOTAL RESPONSES</span>
+        </div>
+
+        <div class="stat">
+          <strong id="yes" class="green">0</strong>
+          <span>CONFIRMED</span>
+        </div>
+
+        <div class="stat">
+          <strong id="no" class="red">0</strong>
+          <span>NOT ATTENDING</span>
+        </div>
+
+        <div class="stat">
+          <strong id="rate">0%</strong>
+          <span>CONFIRMATION RATE</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- GUEST LIST -->
+
+    <div class="panel">
+
+      <h2>🏎️ GUEST LIST</h2>
+
+      <div class="top-actions">
+
+        <button
+          type="button"
+          id="refreshButton"
+          onclick="loadGuests()"
+        >
+          🔄 REFRESH
+        </button>
+
+        <button
+          type="button"
+          onclick="downloadCSV()"
+        >
+          📥 DOWNLOAD CSV
+        </button>
+
+      </div>
+
+      <div id="guestList">
+        <p class="small">Loading guest information...</p>
+      </div>
+
+      <p class="small" id="lastUpdated"></p>
+
+    </div>
+
+    <!-- LOGOUT -->
+
+    <button
+      type="button"
+      onclick="logout()"
+    >
+      LOG OUT
+    </button>
+
+  </div>
+
+  <div class="checkered"></div>
+
+  <a href="index.html" class="back">
+    ← BACK TO INVITATION
+  </a>
+
+  <div class="footer">
+    RACE CONTROL SYSTEM • ADMIN ONLY
+  </div>
+
+</div>
+<script>
+
+// GOOGLE APPS SCRIPT URL
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyGE9QV27fEAHRZwZakEyHNj-As1i3Iwr-oeAYYurIOjD0LPZVP6oqVvgG8KUsdAAi2/exec";
+
+let adminPassword = "";
+let adminPassword = "";
+let guestData = [];
+
+// SHOW / HIDE PASSWORD
+
+function togglePasswordVisibility() {
+
+  const password =
+    document.getElementById("password");
+
+  const eye =
+    document.getElementById("togglePassword");
+
+  if (password.type === "password") {
+
+    password.type = "text";
+
+    eye.textContent = "🙈";
+
+    eye.setAttribute(
+      "aria-label",
+      "Hide password"
+    );
+
+  } else {
+
+    password.type = "password";
+
+    eye.textContent = "👁";
+
+    eye.setAttribute(
+      "aria-label",
+      "Show password"
+    );
+
+  }
+
+}
+
+// GOOGLE APPS SCRIPT CONNECTION
+
+function callScript(params, callback) {
+
+  const callbackName =
+    "callback_" + Date.now() + "_" +
+    Math.random().toString(36).slice(2);
+
+  params.callback = callbackName;
+
+  const script = document.createElement("script");
+
+  let completed = false;
+
+  const timeout = setTimeout(function() {
+
+    if (completed) return;
+
+    completed = true;
+
+    delete window[callbackName];
+
+    script.remove();
+
+    callback({
+      success: false,
+      message: "Connection timed out. Please try again."
+    });
+
+  }, 15000);
+
+  window[callbackName] = function(data) {
+
+    if (completed) return;
+
+    completed = true;
+
+    clearTimeout(timeout);
+
+    delete window[callbackName];
+
+    script.remove();
+
+    callback(data);
+
+  };
+
+  script.onerror = function() {
+
+    if (completed) return;
+
+    completed = true;
+
+    clearTimeout(timeout);
+
+    delete window[callbackName];
+
+    script.remove();
+
+    callback({
+      success: false,
+      message: "Unable to connect to the server."
+    });
+
+  };
+
+  script.src =
+    SCRIPT_URL + "?" +
+    new URLSearchParams(params).toString();
+
+  document.body.appendChild(script);
+
+}
+
+// ADMIN LOGIN
+
+function login() {
+
+  const password =
+    document.getElementById("password").value;
+
+  const message =
+    document.getElementById("message");
+
+  const loginButton =
+    document.getElementById("loginButton");
+
+  if (!password.trim()) {
+
+    message.className = "error";
+
+    message.textContent =
+      "✕ Please enter your password.";
+
+    return;
+
+  }
+
+  if (
+    !SCRIPT_URL ||
+    SCRIPT_URL === "PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE"
+  ) {
+
+    message.className = "error";
+
+    message.textContent =
+      "✕ Please configure your Google Apps Script URL.";
+
+    return;
+
+  }
+
+  loginButton.disabled = true;
+
+  loginButton.textContent = "VERIFYING PASSWORD...";
+
+  message.className = "";
+
+  message.textContent = "Checking admin credentials...";
+
+  callScript({
+
+    action: "list",
+    password: password
+
+  }, function(data) {
+
+    loginButton.disabled = false;
+
+    loginButton.textContent = "ACCESS DASHBOARD 🏁";
+
+    if (data && data.success) {
+
+      adminPassword = password;
+
+      message.className = "success";
+
+      message.textContent =
+        "✓ Password accepted! Welcome, Admin.";
+
+      document.getElementById("loginPanel").style.display =
+        "none";
+
+      document.getElementById("dashboard").style.display =
+        "block";
+
+      displayGuests(data.responses || []);
+
+    } else {
+
+      message.className = "error";
+
+      message.textContent =
+        "✕ Incorrect password. Please try again.";
+
+    }
+
+  });
+
+}
+
+// LOAD GUESTS
+
+function loadGuests() {
+
+  const list =
+    document.getElementById("guestList");
+
+  const refreshButton =
+    document.getElementById("refreshButton");
+
+  list.textContent = "Loading guests...";
+
+  refreshButton.disabled = true;
+
+  refreshButton.textContent = "LOADING...";
+
+  callScript({
+
+    action: "list",
+    password: adminPassword
+
+  }, function(data) {
+
+    refreshButton.disabled = false;
+
+    refreshButton.textContent = "🔄 REFRESH";
+
+    if (data && data.success) {
+
+      displayGuests(data.responses || []);
+
+    } else {
+
+      list.textContent =
+        "Unable to load guest list. Please log in again.";
+
+    }
+
+  });
+
+}
+
+// DISPLAY GUESTS AND STATISTICS
+
+function displayGuests(responses) {
+
+  guestData = responses;
+
+  const yes = responses.filter(function(r) {
+
+    return String(r.attendance).toUpperCase() === "YES";
+
+  }).length;
+
+  const no = responses.filter(function(r) {
+
+    return String(r.attendance).toUpperCase() === "NO";
+
+  }).length;
+
+  document.getElementById("total").textContent =
+    responses.length;
+
+  document.getElementById("yes").textContent =
+    yes;
+
+  document.getElementById("no").textContent =
+    no;
+
+  const rate = responses.length
+    ? Math.round((yes / responses.length) * 100)
+    : 0;
+
+  document.getElementById("rate").textContent =
+    rate + "%";
+
+  const list =
+    document.getElementById("guestList");
+
+  list.innerHTML = "";
+
+  if (!responses.length) {
+
+    list.textContent = "No RSVPs yet.";
+
+  } else {
+
+    responses.forEach(function(guest) {
+
+      const item = document.createElement("div");
+
+      item.className = "guest";
+
+      const name = document.createElement("span");
+
+      name.textContent =
+        guest.name || "Unnamed guest";
+
+      const status = document.createElement("span");
+
+      const attendance =
+        String(guest.attendance).toUpperCase();
+
+      status.className = "status " +
+        (attendance === "YES" ? "yes" : "no");
+
+      status.textContent = attendance;
+
+      item.append(name, status);
+
+      list.appendChild(item);
+
+    });
+
+  }
+
+  document.getElementById("lastUpdated").textContent =
+    "Last updated: " + new Date().toLocaleString();
+
+}
+
+// DOWNLOAD CSV
+
+function downloadCSV() {
+
+  if (!guestData.length) {
+
+    alert("There are no responses to download.");
+
+    return;
+
+  }
+
+  const rows = [
+
+    ["Guest Name", "Attendance"],
+
+    ...guestData.map(function(g) {
+
+      return [g.name, g.attendance];
+
+    })
+
+  ];
+
+  const csv = rows.map(function(row) {
+
+    return row.map(function(value) {
+
+      return '"' +
+        String(value || "").replace(/"/g, '""') +
+        '"';
+
+    }).join(",");
+
+  }).join("\n");
+
+  const blob = new Blob(
+    ["\uFEFF" + csv],
+    { type: "text/csv;charset=utf-8;" }
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+
+  link.href = url;
+
+  link.download = "guest-attendance.csv";
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  link.remove();
+
+  URL.revokeObjectURL(url);
+
+}
+
+// LOGOUT
+
+function logout() {
+
+  adminPassword = "";
+
+  guestData = [];
+
+  document.getElementById("dashboard").style.display =
+    "none";
+
+  document.getElementById("loginPanel").style.display =
+    "block";
+
+  document.getElementById("password").value = "";
+
+  document.getElementById("password").type =
+    "password";
+
+  document.getElementById("togglePassword").textContent =
+    "👁";
+
+  document.getElementById("togglePassword").setAttribute(
+    "aria-label",
+    "Show password"
+  );
+
+  document.getElementById("message").textContent = "";
+
+  document.getElementById("message").className = "";
+
+}
+
+// ENTER KEY LOGIN
+
+document.getElementById("password")
+.addEventListener("keydown", function(e) {
+
+  if (e.key === "Enter") {
+
+    login();
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>

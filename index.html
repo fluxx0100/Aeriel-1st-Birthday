@@ -1,0 +1,668 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090909">
+<title>You're Invited | Race Day</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --red: #e10613;
+  --dark-red: #85000a;
+  --black: #080808;
+  --gray: #1b1b1b;
+  --white: #fff;
+}
+
+body {
+  background: #050505;
+  color: white;
+  font-family: Arial, sans-serif;
+  padding: 0 10px;
+}
+
+.phone {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  margin: auto;
+  overflow: hidden;
+  background: var(--black);
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+}
+
+/* TOP RACING BAR */
+
+.top-bar {
+  background: var(--red);
+  text-align: center;
+  padding: 13px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 4px;
+}
+
+.top-bar span {
+  margin: 0 8px;
+}
+
+/* HERO */
+
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 35px 18px 25px;
+  background:
+    radial-gradient(ellipse at center, #292929 0%, #111 55%, #080808 100%);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60px;
+  width: 160px;
+  height: 100%;
+  background: var(--red);
+  opacity: .08;
+  transform: skewX(-25deg);
+}
+
+.tag {
+  position: relative;
+  color: #ff3038;
+  font-size: 11px;
+  letter-spacing: 6px;
+  font-weight: bold;
+}
+
+h1 {
+  position: relative;
+  font-size: 45px;
+  line-height: .95;
+  margin: 16px 0;
+  font-weight: 1000;
+  font-style: italic;
+  text-transform: uppercase;
+  text-shadow: 3px 3px 0 #700008;
+}
+
+.hero p {
+  position: relative;
+  color: #ccc;
+  font-size: 11px;
+  letter-spacing: 2px;
+  line-height: 1.7;
+}
+
+/* RACING NUMBER */
+
+.racing-number {
+  position: relative;
+  width: 85px;
+  height: 85px;
+  margin: 24px auto 5px;
+  border: 3px solid white;
+  outline: 3px solid var(--red);
+  outline-offset: 4px;
+  transform: skew(-8deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--red);
+  box-shadow: 0 0 25px #e1061360;
+}
+
+.racing-number span {
+  font-size: 45px;
+  font-weight: 1000;
+  font-style: italic;
+}
+
+/* PHOTOS */
+
+.photo {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  border: 3px solid var(--red);
+  border-radius: 5px;
+  box-shadow: 0 8px 25px #000;
+}
+
+.photo-one {
+  height: 390px;
+  margin-top: 25px;
+}
+
+.photo-two {
+  height: 270px;
+  margin-top: 20px;
+}
+
+/* SPEED STRIPE */
+
+.speed-stripe {
+  height: 7px;
+  background: repeating-linear-gradient(
+    110deg,
+    var(--red) 0px,
+    var(--red) 25px,
+    transparent 25px,
+    transparent 38px
+  );
+}
+
+/* SECTION */
+
+.section {
+  padding: 30px 20px;
+  text-align: center;
+  position: relative;
+  background: #0b0b0b;
+}
+
+.section-title {
+  color: #ff3038;
+  font-size: 12px;
+  letter-spacing: 4px;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.celebrant-name {
+  font-size: 30px;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  text-shadow: 2px 2px #8b0000;
+}
+
+.divider {
+  height: 3px;
+  width: 65px;
+  background: var(--red);
+  margin: 20px auto;
+}
+
+.description {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* EVENT DETAILS */
+
+.event-details {
+  position: relative;
+  border: 1px solid #3b3b3b;
+  border-top: 4px solid var(--red);
+  border-radius: 5px;
+  padding: 25px 15px;
+  background:
+    linear-gradient(145deg, #202020, #101010);
+  box-shadow: 0 10px 25px #000;
+}
+
+.detail {
+  padding: 8px 0;
+}
+
+.detail-label {
+  color: var(--red);
+  font-size: 10px;
+  letter-spacing: 4px;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.event-details strong {
+  display: block;
+  color: white;
+  font-size: 19px;
+  font-style: italic;
+  text-transform: uppercase;
+}
+
+.event-details p {
+  color: #888;
+  font-size: 12px;
+}
+
+.detail-divider {
+  height: 1px;
+  background: #383838;
+  margin: 15px 0;
+}
+
+/* RACE GRID */
+
+.grid-title {
+  color: #888;
+  font-size: 9px;
+  letter-spacing: 3px;
+  margin: 22px 0 10px;
+}
+
+.start-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  max-width: 210px;
+  margin: auto;
+}
+
+.start-grid div {
+  height: 20px;
+  background: #252525;
+  border: 1px solid #333;
+}
+
+.start-grid div:nth-child(3n+1) {
+  background: var(--red);
+}
+
+/* RSVP */
+
+.rsvp {
+  padding: 30px 20px 40px;
+  background: linear-gradient(#191919, #090909);
+  text-align: center;
+  border-top: 1px solid #333;
+}
+
+.rsvp-description {
+  color: #aaa;
+  font-size: 13px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+input, select {
+  width: 100%;
+  padding: 16px;
+  margin: 8px 0;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background: #090909;
+  color: white;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 10px #e1061330;
+}
+
+button {
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  padding: 17px;
+  margin-top: 12px;
+  background: var(--red);
+  color: white;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transform: skew(-3deg);
+  box-shadow: 0 5px 0 #740008;
+  transition: .2s;
+}
+
+button:active {
+  transform: skew(-3deg) translateY(3px);
+  box-shadow: 0 2px 0 #740008;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+#message {
+  font-size: 13px;
+  margin-top: 18px;
+  color: white;
+  line-height: 1.6;
+}
+
+/* FINISH LINE */
+
+.checkered {
+  height: 18px;
+  background:
+    repeating-conic-gradient(
+      #fff 0% 25%,
+      #111 0% 50%
+    ) 0 0 / 20px 20px;
+}
+
+.footer {
+  text-align: center;
+  color: #777;
+  font-size: 10px;
+  letter-spacing: 2px;
+  line-height: 2;
+  padding: 25px 15px;
+  background: #080808;
+}
+
+.admin-link {
+  display: inline-block;
+  margin-top: 15px;
+  color: #777;
+  text-decoration: none;
+  font-size: 10px;
+  border-bottom: 1px solid #555;
+  padding-bottom: 3px;
+}
+
+.admin-link:hover {
+  color: var(--red);
+}
+
+/* DECORATIVE FLAG */
+
+.flag {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  margin: 20px auto;
+}
+
+.flag span {
+  width: 12px;
+  height: 12px;
+  background: white;
+}
+
+.flag span:nth-child(even) {
+  background: #222;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+
+  <div class="top-bar">
+    🏁 <span>THE RACE IS ON</span> 🏁
+  </div>
+
+  <div class="hero">
+
+    <div class="tag">YOU'RE INVITED TO</div>
+
+    <h1>THE<br>BIG DAY</h1>
+
+    <p>
+      ONE DAY. ONE CELEBRATION.<br>
+      FULL SPEED. NO LIMITS.
+    </p>
+
+    <div class="racing-number">
+      <span>01</span>
+    </div>
+
+    <div class="flag">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+
+    <img src="1.png"
+         class="photo photo-one"
+         alt="Celebrant photo">
+
+  </div>
+
+  <div class="speed-stripe"></div>
+
+  <div class="section">
+
+    <div class="section-title">
+      MEET THE CELEBRANT
+    </div>
+
+    <div class="celebrant-name">
+      [CELEBRANT NAME]
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="description">
+      Get ready for a celebration worth remembering.
+      Your presence will make this day even more special!
+      Let's make this birthday one for the finish line!
+    </p>
+
+    <img src="2.png"
+         class="photo photo-two"
+         alt="Celebrant photo">
+
+  </div>
+
+  <div class="speed-stripe"></div>
+
+  <div class="section">
+
+    <div class="section-title">
+      🏁 RACE DAY DETAILS
+    </div>
+
+    <div class="event-details">
+
+      <div class="detail">
+        <div class="detail-label">📅 DATE</div>
+        <strong>[EVENT DATE]</strong>
+      </div>
+
+      <div class="detail-divider"></div>
+
+      <div class="detail">
+        <div class="detail-label">⏱ TIME</div>
+        <strong>[EVENT TIME]</strong>
+      </div>
+
+      <div class="detail-divider"></div>
+
+      <div class="detail">
+        <div class="detail-label">📍 VENUE</div>
+        <strong>[EVENT VENUE]</strong>
+      </div>
+
+    </div>
+
+    <div class="grid-title">
+      GET READY FOR THE STARTING GRID
+    </div>
+
+    <div class="start-grid">
+      <div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div>
+    </div>
+
+  </div>
+
+  <div class="speed-stripe"></div>
+
+  <div class="rsvp">
+
+    <div class="section-title">
+      CONFIRM YOUR ATTENDANCE
+    </div>
+
+    <p class="rsvp-description">
+      Will you be joining the celebration?<br>
+      Let us know before race day!
+    </p>
+
+    <form id="rsvpForm">
+
+      <input
+        type="text"
+        id="guestName"
+        placeholder="Enter your full name"
+        maxlength="80"
+        required
+      >
+
+      <select id="attendance" required>
+        <option value="">SELECT YOUR RESPONSE</option>
+        <option value="YES">🏁 YES, I'LL BE THERE!</option>
+        <option value="NO">SORRY, CAN'T MAKE IT</option>
+      </select>
+
+      <button type="submit" id="submitBtn">
+        SUBMIT RSVP 🏁
+      </button>
+
+    </form>
+
+    <div id="message"></div>
+
+  </div>
+
+  <div class="checkered"></div>
+
+  <div class="footer">
+
+    <div class="flag">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+
+    THANK YOU FOR BEING PART OF THE RACE!
+
+    <br>
+
+    <a class="admin-link" href="admin.html">
+      ADMIN ACCESS
+    </a>
+
+  </div>
+
+</div>
+
+<script>
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyGE9QV27fEAHRZwZakEyHNj-As1i3Iwr-oeAYYurIOjD0LPZVP6oqVvgG8KUsdAAi2/exec";
+
+function callScript(params, callback) {
+
+  const callbackName = "callback_" +
+    Date.now() + "_" +
+    Math.random().toString(36).slice(2);
+
+  params.callback = callbackName;
+
+  const script = document.createElement("script");
+
+  let completed = false;
+
+  function cleanup() {
+    delete window[callbackName];
+    script.remove();
+  }
+
+  function finish(data) {
+    if (completed) return;
+
+    completed = true;
+    cleanup();
+    callback(data);
+  }
+
+  window[callbackName] = function(data) {
+    finish(data);
+  };
+
+  script.onerror = function() {
+    finish({
+      success: false,
+      message: "Connection error. Please try again."
+    });
+  };
+
+  script.src = SCRIPT_URL + "?" +
+    new URLSearchParams(params).toString();
+
+  document.body.appendChild(script);
+
+}
+
+document.getElementById("rsvpForm")
+.addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  const name = document
+    .getElementById("guestName")
+    .value.trim();
+
+  const attendance = document
+    .getElementById("attendance")
+    .value;
+
+  const button = document
+    .getElementById("submitBtn");
+
+  const message = document
+    .getElementById("message");
+
+  if (!name || !attendance) {
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "SUBMITTING...";
+  message.textContent = "";
+
+  callScript({
+
+    action: "submit",
+    name: name,
+    attendance: attendance
+
+  }, function(data) {
+
+    if (data && data.success) {
+
+      message.textContent =
+        "🏁 Your response has been recorded. Thank you!";
+
+      document.getElementById("rsvpForm").reset();
+
+    } else {
+
+      message.textContent =
+        (data && data.message) ||
+        "Something went wrong. Please try again.";
+
+    }
+
+    button.disabled = false;
+    button.textContent = "SUBMIT RSVP 🏁";
+
+  });
+
+});
+
+</script>
+
+</body>
+</html>
