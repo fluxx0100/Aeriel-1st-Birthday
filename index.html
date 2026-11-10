@@ -57,12 +57,7 @@ body {
   position: relative;
   text-align: center;
   padding: 35px 18px 25px;
-  background: radial-gradient(
-    ellipse at center,
-    #292929 0%,
-    #111 55%,
-    #080808 100%
-  );
+  background: radial-gradient(ellipse at center, #292929 0%, #111 55%, #080808 100%);
   overflow: hidden;
 }
 
@@ -404,9 +399,7 @@ button:disabled {
       <span></span><span></span><span></span>
     </div>
 
-    <img src="1.png"
-         class="photo photo-one"
-         alt="Celebrant photo">
+    <img src="1.png" class="photo photo-one" alt="Celebrant photo">
 
   </div>
 
@@ -414,13 +407,9 @@ button:disabled {
 
   <div class="section">
 
-    <div class="section-title">
-      MEET THE CELEBRANT
-    </div>
+    <div class="section-title">MEET THE CELEBRANT</div>
 
-    <div class="celebrant-name">
-      AERIEL NATHANIEL
-    </div>
+    <div class="celebrant-name">AERIEL NATHANIEL</div>
 
     <div class="divider"></div>
 
@@ -430,9 +419,7 @@ button:disabled {
       Let's make this birthday one for the finish line!
     </p>
 
-    <img src="2.png"
-         class="photo photo-two"
-         alt="Celebrant photo">
+    <img src="2.png" class="photo photo-two" alt="Celebrant photo">
 
   </div>
 
@@ -440,9 +427,7 @@ button:disabled {
 
   <div class="section">
 
-    <div class="section-title">
-      🏁 RACE DAY DETAILS
-    </div>
+    <div class="section-title">🏁 RACE DAY DETAILS</div>
 
     <div class="event-details">
 
@@ -470,9 +455,7 @@ button:disabled {
 
     </div>
 
-    <div class="grid-title">
-      GET READY FOR THE STARTING GRID
-    </div>
+    <div class="grid-title">GET READY FOR THE STARTING GRID</div>
 
     <div class="start-grid">
       <div></div><div></div><div></div><div></div><div></div>
@@ -485,9 +468,7 @@ button:disabled {
 
   <div class="rsvp">
 
-    <div class="section-title">
-      CONFIRM YOUR ATTENDANCE
-    </div>
+    <div class="section-title">CONFIRM YOUR ATTENDANCE</div>
 
     <p class="rsvp-description">
       Will you be joining the celebration?<br>
@@ -545,8 +526,9 @@ button:disabled {
 <script>
 "use strict";
 
-// YOUR GOOGLE APPS SCRIPT WEB APP URL
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBDQmskEiF0z9T-VSzIwGGiQfAQklAlX7zvJNqVqGf0P5i3pnRIjGXvMu64QIkgh2C/exec";
+// GOOGLE APPS SCRIPT WEB APP URL
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyBDQmskEiF0z9T-VSzIwGGiQfAQklAlX7zvJNqVqGf0P5i3pnRIjGXvMu64QIkgh2C/exec";
 
 // JSONP CONNECTION
 function callScript(params, callback) {
@@ -560,13 +542,15 @@ function callScript(params, callback) {
   const script = document.createElement("script");
 
   let completed = false;
+  let timeout;
 
   function cleanup() {
-    clearTimeout(timeout);
 
-    if (window[callbackName]) {
-      delete window[callbackName];
+    if (timeout) {
+      clearTimeout(timeout);
     }
+
+    delete window[callbackName];
 
     script.onerror = null;
 
@@ -576,25 +560,33 @@ function callScript(params, callback) {
   }
 
   function finish(data) {
+
     if (completed) return;
 
     completed = true;
+
     cleanup();
+
     callback(data);
   }
 
+  // RECEIVE GOOGLE APPS SCRIPT RESPONSE
   window[callbackName] = function(data) {
     finish(data);
   };
 
+  // HANDLE CONNECTION ERROR
   script.onerror = function() {
+
     finish({
       success: false,
       message:
-        "Unable to connect to Google Apps Script. Check your deployment and URL."
+        "Connection failed. Requested URL: " + script.src
     });
+
   };
 
+  // BUILD REQUEST URL
   const query = new URLSearchParams({
     ...params,
     callback: callbackName,
@@ -604,18 +596,21 @@ function callScript(params, callback) {
   script.src = SCRIPT_URL + "?" + query.toString();
   script.async = true;
 
-  const timeout = setTimeout(function() {
+  // CONNECTION TIMEOUT
+  timeout = setTimeout(function() {
+
     finish({
       success: false,
       message:
-        "The server did not respond in time. Please try again."
+        "The server did not respond within 20 seconds. Please try again."
     });
+
   }, 20000);
 
   document.body.appendChild(script);
 }
 
-// RSVP SUBMISSION
+// RSVP FORM SUBMISSION
 document.getElementById("rsvpForm")
 .addEventListener("submit", function(e) {
 
@@ -636,21 +631,27 @@ document.getElementById("rsvpForm")
     .getElementById("message");
 
   if (!name || !attendance) {
+
     message.textContent =
       "Please enter your name and select your response.";
+
     return;
   }
 
   if (name.length > 80) {
+
     message.textContent =
       "Your name must be 80 characters or fewer.";
+
     return;
   }
 
+  // PREVENT MULTIPLE SUBMISSIONS
   button.disabled = true;
   button.textContent = "SUBMITTING...";
   message.textContent = "Sending your RSVP...";
 
+  // SEND RSVP TO GOOGLE SHEETS
   callScript({
 
     action: "submit",
@@ -669,7 +670,7 @@ document.getElementById("rsvpForm")
     } else {
 
       message.textContent =
-        (data && data.message)
+        data && data.message
           ? data.message
           : "Something went wrong. Please try again.";
 
@@ -681,6 +682,7 @@ document.getElementById("rsvpForm")
   });
 
 });
+
 </script>
 
 </body>
