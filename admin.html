@@ -72,8 +72,6 @@ body {
   margin-top: 8px;
 }
 
-/* CHECKERED FLAG */
-
 .checkered {
   height: 12px;
   margin-top: 12px;
@@ -145,6 +143,7 @@ input:focus {
   box-shadow: none;
   transform: none;
   cursor: pointer;
+  z-index: 2;
 }
 
 .toggle-password:active {
@@ -343,18 +342,14 @@ button:disabled {
         type="button"
         class="toggle-password"
         id="togglePassword"
-        onclick="togglePasswordVisibility()"
         aria-label="Show password"
-      >
-        👁
-      </button>
+      >👁</button>
 
     </div>
 
     <button
       type="button"
       id="loginButton"
-      onclick="login()"
     >
       ACCESS DASHBOARD 🏁
     </button>
@@ -366,8 +361,6 @@ button:disabled {
   <!-- DASHBOARD -->
 
   <div id="dashboard">
-
-    <!-- STATISTICS -->
 
     <div class="panel">
 
@@ -410,14 +403,13 @@ button:disabled {
         <button
           type="button"
           id="refreshButton"
-          onclick="loadGuests()"
         >
           🔄 REFRESH
         </button>
 
         <button
           type="button"
-          onclick="downloadCSV()"
+          id="downloadButton"
         >
           📥 DOWNLOAD CSV
         </button>
@@ -425,7 +417,7 @@ button:disabled {
       </div>
 
       <div id="guestList">
-        <p class="small">Loading guest information...</p>
+        <p class="small">Waiting for guest information...</p>
       </div>
 
       <p class="small" id="lastUpdated"></p>
@@ -436,7 +428,7 @@ button:disabled {
 
     <button
       type="button"
-      onclick="logout()"
+      id="logoutButton"
     >
       LOG OUT
     </button>
@@ -454,52 +446,46 @@ button:disabled {
   </div>
 
 </div>
+
 <script>
 
-// GOOGLE APPS SCRIPT URL
+// ==================================
+// GOOGLE APPS SCRIPT CONNECTION
+// ==================================
+
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBDQmskEiF0z9T-VSzIwGGiQfAQklAlX7zvJNqVqGf0P5i3pnRIjGXvMu64QIkgh2C/exec";
 
 let adminPassword = "";
-let adminPassword = "";
 let guestData = [];
 
-// SHOW / HIDE PASSWORD
+// ==================================
+// PASSWORD VISIBILITY
+// ==================================
 
 function togglePasswordVisibility() {
 
-  const password =
-    document.getElementById("password");
-
-  const eye =
-    document.getElementById("togglePassword");
+  const password = document.getElementById("password");
+  const eye = document.getElementById("togglePassword");
 
   if (password.type === "password") {
 
     password.type = "text";
-
     eye.textContent = "🙈";
-
-    eye.setAttribute(
-      "aria-label",
-      "Hide password"
-    );
+    eye.setAttribute("aria-label", "Hide password");
 
   } else {
 
     password.type = "password";
-
     eye.textContent = "👁";
-
-    eye.setAttribute(
-      "aria-label",
-      "Show password"
-    );
+    eye.setAttribute("aria-label", "Show password");
 
   }
 
 }
 
-// GOOGLE APPS SCRIPT CONNECTION
+// ==================================
+// GOOGLE APPS SCRIPT REQUEST
+// ==================================
 
 function callScript(params, callback) {
 
@@ -507,28 +493,32 @@ function callScript(params, callback) {
     "callback_" + Date.now() + "_" +
     Math.random().toString(36).slice(2);
 
-  params.callback = callbackName;
-
   const script = document.createElement("script");
 
   let completed = false;
+
+  params.callback = callbackName;
+
+  function cleanup() {
+
+    delete window[callbackName];
+    script.remove();
+
+  }
 
   const timeout = setTimeout(function() {
 
     if (completed) return;
 
     completed = true;
-
-    delete window[callbackName];
-
-    script.remove();
+    cleanup();
 
     callback({
       success: false,
-      message: "Connection timed out. Please try again."
+      message: "Connection timed out. Check your internet or Apps Script deployment."
     });
 
-  }, 15000);
+  }, 20000);
 
   window[callbackName] = function(data) {
 
@@ -537,10 +527,7 @@ function callScript(params, callback) {
     completed = true;
 
     clearTimeout(timeout);
-
-    delete window[callbackName];
-
-    script.remove();
+    cleanup();
 
     callback(data);
 
@@ -553,14 +540,11 @@ function callScript(params, callback) {
     completed = true;
 
     clearTimeout(timeout);
-
-    delete window[callbackName];
-
-    script.remove();
+    cleanup();
 
     callback({
       success: false,
-      message: "Unable to connect to the server."
+      message: "Unable to connect to Google Apps Script."
     });
 
   };
@@ -573,7 +557,9 @@ function callScript(params, callback) {
 
 }
 
+// ==================================
 // ADMIN LOGIN
+// ==================================
 
 function login() {
 
@@ -589,34 +575,25 @@ function login() {
   if (!password.trim()) {
 
     message.className = "error";
-
-    message.textContent =
-      "✕ Please enter your password.";
+    message.textContent = "✕ Please enter your password.";
 
     return;
 
   }
 
-  if (
-    !SCRIPT_URL ||
-    SCRIPT_URL === "PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE"
-  ) {
+  if (!SCRIPT_URL || !SCRIPT_URL.includes("/exec")) {
 
     message.className = "error";
-
-    message.textContent =
-      "✕ Please configure your Google Apps Script URL.";
+    message.textContent = "✕ Invalid Apps Script URL.";
 
     return;
 
   }
 
   loginButton.disabled = true;
-
   loginButton.textContent = "VERIFYING PASSWORD...";
 
   message.className = "";
-
   message.textContent = "Checking admin credentials...";
 
   callScript({
@@ -627,23 +604,15 @@ function login() {
   }, function(data) {
 
     loginButton.disabled = false;
-
     loginButton.textContent = "ACCESS DASHBOARD 🏁";
 
-    if (data && data.success) {
+    if (data && data.success === true) {
 
       adminPassword = password;
 
-      message.className = "success";
+      document.getElementById("loginPanel").style.display = "none";
 
-      message.textContent =
-        "✓ Password accepted! Welcome, Admin.";
-
-      document.getElementById("loginPanel").style.display =
-        "none";
-
-      document.getElementById("dashboard").style.display =
-        "block";
+      document.getElementById("dashboard").style.display = "block";
 
       displayGuests(data.responses || []);
 
@@ -652,7 +621,10 @@ function login() {
       message.className = "error";
 
       message.textContent =
-        "✕ Incorrect password. Please try again.";
+        "✕ " +
+        (data && data.message
+          ? data.message
+          : "Incorrect password or server rejected the request.");
 
     }
 
@@ -660,7 +632,9 @@ function login() {
 
 }
 
+// ==================================
 // LOAD GUESTS
+// ==================================
 
 function loadGuests() {
 
@@ -673,7 +647,6 @@ function loadGuests() {
   list.textContent = "Loading guests...";
 
   refreshButton.disabled = true;
-
   refreshButton.textContent = "LOADING...";
 
   callScript({
@@ -684,17 +657,18 @@ function loadGuests() {
   }, function(data) {
 
     refreshButton.disabled = false;
-
     refreshButton.textContent = "🔄 REFRESH";
 
-    if (data && data.success) {
+    if (data && data.success === true) {
 
       displayGuests(data.responses || []);
 
     } else {
 
       list.textContent =
-        "Unable to load guest list. Please log in again.";
+        data && data.message
+          ? data.message
+          : "Unable to load guest list. Please try again.";
 
     }
 
@@ -702,7 +676,9 @@ function loadGuests() {
 
 }
 
+// ==================================
 // DISPLAY GUESTS AND STATISTICS
+// ==================================
 
 function displayGuests(responses) {
 
@@ -723,11 +699,9 @@ function displayGuests(responses) {
   document.getElementById("total").textContent =
     responses.length;
 
-  document.getElementById("yes").textContent =
-    yes;
+  document.getElementById("yes").textContent = yes;
 
-  document.getElementById("no").textContent =
-    no;
+  document.getElementById("no").textContent = no;
 
   const rate = responses.length
     ? Math.round((yes / responses.length) * 100)
@@ -761,12 +735,12 @@ function displayGuests(responses) {
       const status = document.createElement("span");
 
       const attendance =
-        String(guest.attendance).toUpperCase();
+        String(guest.attendance || "").toUpperCase();
 
-      status.className = "status " +
-        (attendance === "YES" ? "yes" : "no");
+      status.className =
+        "status " + (attendance === "YES" ? "yes" : "no");
 
-      status.textContent = attendance;
+      status.textContent = attendance || "UNKNOWN";
 
       item.append(name, status);
 
@@ -781,7 +755,9 @@ function displayGuests(responses) {
 
 }
 
+// ==================================
 // DOWNLOAD CSV
+// ==================================
 
 function downloadCSV() {
 
@@ -818,8 +794,11 @@ function downloadCSV() {
   }).join("\n");
 
   const blob = new Blob(
+
     ["\uFEFF" + csv],
+
     { type: "text/csv;charset=utf-8;" }
+
   );
 
   const url = URL.createObjectURL(blob);
@@ -840,27 +819,24 @@ function downloadCSV() {
 
 }
 
+// ==================================
 // LOGOUT
+// ==================================
 
 function logout() {
 
   adminPassword = "";
-
   guestData = [];
 
-  document.getElementById("dashboard").style.display =
-    "none";
+  document.getElementById("dashboard").style.display = "none";
 
-  document.getElementById("loginPanel").style.display =
-    "block";
+  document.getElementById("loginPanel").style.display = "block";
 
   document.getElementById("password").value = "";
 
-  document.getElementById("password").type =
-    "password";
+  document.getElementById("password").type = "password";
 
-  document.getElementById("togglePassword").textContent =
-    "👁";
+  document.getElementById("togglePassword").textContent = "👁";
 
   document.getElementById("togglePassword").setAttribute(
     "aria-label",
@@ -873,18 +849,35 @@ function logout() {
 
 }
 
+// ==================================
+// BUTTON EVENTS
+// ==================================
+
+document.getElementById("togglePassword")
+  .addEventListener("click", togglePasswordVisibility);
+
+document.getElementById("loginButton")
+  .addEventListener("click", login);
+
+document.getElementById("refreshButton")
+  .addEventListener("click", loadGuests);
+
+document.getElementById("downloadButton")
+  .addEventListener("click", downloadCSV);
+
+document.getElementById("logoutButton")
+  .addEventListener("click", logout);
+
 // ENTER KEY LOGIN
 
 document.getElementById("password")
-.addEventListener("keydown", function(e) {
+  .addEventListener("keydown", function(e) {
 
-  if (e.key === "Enter") {
+    if (e.key === "Enter") {
+      login();
+    }
 
-    login();
-
-  }
-
-});
+  });
 
 </script>
 
