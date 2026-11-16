@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080808">
+<meta name="theme-color" content="#090909">
 <title>Race Control | Admin Dashboard</title>
 
 <style>
@@ -17,106 +17,84 @@
 :root {
   --red: #e10613;
   --dark: #080808;
-  --panel: #171717;
-  --green: #35d07f;
+  --panel: #181818;
+  --border: #333;
+  --white: #fff;
+  --gray: #aaa;
 }
 
 body {
   background: var(--dark);
-  color: white;
+  color: var(--white);
   font-family: Arial, sans-serif;
-  padding: 15px;
+  padding: 20px 12px;
 }
 
-.phone {
-  max-width: 430px;
+.container {
   width: 100%;
+  max-width: 650px;
   margin: auto;
 }
 
-/* HEADER */
-
 .header {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #e10613, #85000a);
-  padding: 25px 15px;
-  border-radius: 8px;
+  background: linear-gradient(120deg, #ed1725, #850008);
+  padding: 30px 15px;
   text-align: center;
-  border-bottom: 4px solid white;
-}
-
-.header::before {
-  content: "";
-  position: absolute;
-  width: 150px;
-  height: 100%;
-  top: 0;
-  left: -50px;
-  background: white;
-  opacity: .08;
-  transform: skew(-25deg);
+  border-radius: 10px;
+  border-bottom: 5px solid white;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 20px #000;
 }
 
 .header h1 {
-  position: relative;
-  font-size: 26px;
-  font-style: italic;
+  font-size: 27px;
   font-weight: 900;
+  font-style: italic;
 }
 
 .header p {
-  position: relative;
-  font-size: 10px;
-  letter-spacing: 3px;
-  margin-top: 8px;
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 4px;
 }
 
 .checkered {
-  height: 12px;
-  margin-top: 12px;
-  background:
-    repeating-conic-gradient(
-      white 0% 25%,
-      #222 0% 50%
-    ) 0 0 / 16px 16px;
+  height: 18px;
+  margin: 20px 0;
+  background: repeating-conic-gradient(
+    white 0% 25%,
+    #111 0% 50%
+  ) 0 0 / 20px 20px;
 }
-
-/* PANELS */
 
 .panel {
   background: var(--panel);
-  border: 1px solid #333;
-  border-top: 3px solid var(--red);
-  border-radius: 8px;
-  padding: 20px;
-  margin-top: 15px;
-  box-shadow: 0 8px 20px #0005;
+  border: 1px solid var(--border);
+  border-top: 5px solid var(--red);
+  border-radius: 10px;
+  padding: 25px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 20px #000;
 }
 
-h2 {
-  font-size: 16px;
-  margin-bottom: 18px;
+.panel h2 {
+  font-size: 19px;
   font-style: italic;
-  letter-spacing: 1px;
+  margin-bottom: 22px;
 }
 
-/* PASSWORD */
-
-.password-wrapper {
+.password-wrap {
   position: relative;
-  width: 100%;
 }
 
 input {
   width: 100%;
-  padding: 15px;
+  padding: 17px 55px 17px 15px;
   border: 1px solid #444;
-  background: #090909;
+  border-radius: 7px;
+  background: #080808;
   color: white;
-  border-radius: 5px;
-  font-size: 15px;
-  margin-bottom: 10px;
+  font-size: 16px;
   outline: none;
 }
 
@@ -124,101 +102,81 @@ input:focus {
   border-color: var(--red);
 }
 
-.password-wrapper input {
-  padding-right: 55px;
-}
-
-.toggle-password {
+.eye {
   position: absolute;
-  right: 5px;
-  top: 5px;
-  width: 43px;
-  height: 43px;
-  margin: 0;
-  padding: 0;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   background: transparent;
-  color: white;
-  font-size: 20px;
   border: none;
-  box-shadow: none;
-  transform: none;
+  color: white;
+  font-size: 23px;
   cursor: pointer;
-  z-index: 2;
-}
-
-.toggle-password:active {
-  transform: none;
+  padding: 5px;
+  width: auto;
+  margin: 0;
   box-shadow: none;
 }
-
-/* BUTTONS */
 
 button {
   width: 100%;
-  padding: 15px;
+  padding: 16px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 6px;
   background: var(--red);
   color: white;
-  border: none;
-  border-radius: 5px;
+  font-size: 14px;
   font-weight: 900;
-  font-size: 12px;
   letter-spacing: 1px;
   cursor: pointer;
-  margin-top: 8px;
-  box-shadow: 0 4px 0 #740008;
-}
-
-button:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #740008;
+  box-shadow: 0 5px 0 #760008;
 }
 
 button:disabled {
-  opacity: .5;
-  cursor: not-allowed;
+  opacity: .6;
+  cursor: wait;
 }
 
-/* LOGIN MESSAGE */
-
-#message {
-  font-size: 13px;
-  margin-top: 14px;
+.message {
+  margin-top: 18px;
+  font-size: 14px;
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
-#message.success {
-  color: var(--green);
+.error {
+  color: #ff737a;
 }
 
-#message.error {
-  color: #ff5555;
+.success {
+  color: #63e69a;
 }
 
-/* DASHBOARD */
-
-#dashboard {
-  display: none;
+.hidden {
+  display: none !important;
 }
 
 .stats {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
+  margin-bottom: 20px;
 }
 
 .stat {
-  background: #222;
-  padding: 18px 10px;
-  border-radius: 6px;
+  background: #101010;
+  border: 1px solid #383838;
+  border-radius: 7px;
+  padding: 17px 5px;
   text-align: center;
-  border-bottom: 2px solid #444;
 }
 
 .stat strong {
   display: block;
-  font-size: 30px;
+  color: var(--red);
+  font-size: 27px;
   margin-bottom: 7px;
-  font-style: italic;
 }
 
 .stat span {
@@ -227,110 +185,124 @@ button:disabled {
   letter-spacing: 1px;
 }
 
-.green {
-  color: var(--green);
+.toolbar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
 }
 
-.red {
-  color: #ff5555;
+.toolbar button {
+  margin: 0;
+  padding: 13px 5px;
+  font-size: 11px;
 }
 
-/* GUEST LIST */
+.toolbar .secondary {
+  background: #333;
+  box-shadow: 0 4px 0 #111;
+}
+
+.guest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 .guest {
-  background: #222;
+  background: #0c0c0c;
+  border: 1px solid #383838;
+  border-left: 4px solid var(--red);
+  border-radius: 6px;
   padding: 14px;
-  border-radius: 5px;
-  margin-top: 9px;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  align-items: center;
-  font-size: 13px;
-  overflow-wrap: anywhere;
-  border-left: 3px solid #555;
+  text-align: left;
 }
 
-.status {
+.guest-name {
+  font-size: 16px;
   font-weight: bold;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
+.guest-status {
+  display: inline-block;
+  margin-top: 8px;
   font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
 }
 
-.yes {
-  color: var(--green);
+.attending {
+  color: #65e69b;
 }
 
-.no {
-  color: #ff5555;
+.not-attending {
+  color: #ff737a;
 }
 
-.top-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.top-actions button {
-  flex: 1;
-  font-size: 10px;
-  padding: 13px 5px;
-}
-
-.small {
-  color: #888;
+.guest-time {
+  color: #777;
   font-size: 11px;
+  margin-top: 8px;
+}
+
+.empty {
+  color: #999;
   text-align: center;
-  margin-top: 18px;
+  padding: 25px 5px;
+  font-size: 14px;
 }
-
-/* FOOTER */
 
 .back {
   display: block;
-  color: #aaa;
   text-align: center;
-  margin-top: 25px;
-  font-size: 12px;
+  color: #aaa;
   text-decoration: none;
-}
-
-.back:hover {
-  color: var(--red);
+  margin: 25px 0;
+  font-size: 13px;
 }
 
 .footer {
-  color: #555;
   text-align: center;
-  font-size: 9px;
-  letter-spacing: 2px;
-  margin-top: 25px;
-  padding-bottom: 20px;
+  color: #666;
+  font-size: 10px;
+  letter-spacing: 3px;
+  padding: 15px;
 }
 
+@media (max-width: 380px) {
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .stats {
+    gap: 5px;
+  }
+
+  .stat strong {
+    font-size: 23px;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<div class="phone">
+<div class="container">
 
-  <!-- HEADER -->
-
-  <div class="header">
+  <header class="header">
     <h1>🏁 RACE CONTROL</h1>
     <p>CELEBRATION ADMIN DASHBOARD</p>
-  </div>
+  </header>
 
   <div class="checkered"></div>
 
-  <!-- LOGIN PANEL -->
-
-  <div class="panel" id="loginPanel">
+  <!-- LOGIN -->
+  <section class="panel" id="loginPanel">
 
     <h2>🔐 ADMIN LOGIN</h2>
 
-    <div class="password-wrapper">
-
+    <div class="password-wrap">
       <input
         type="password"
         id="password"
@@ -340,100 +312,77 @@ button:disabled {
 
       <button
         type="button"
-        class="toggle-password"
+        class="eye"
         id="togglePassword"
         aria-label="Show password"
-      >👁</button>
-
+      >🙈</button>
     </div>
 
-    <button
-      type="button"
-      id="loginButton"
-    >
+    <button type="button" id="loginBtn">
       ACCESS DASHBOARD 🏁
     </button>
 
-    <div id="message" role="status" aria-live="polite"></div>
+    <div class="message" id="loginMessage" role="status"></div>
 
-  </div>
+  </section>
 
   <!-- DASHBOARD -->
-
-  <div id="dashboard">
+  <section class="hidden" id="dashboard">
 
     <div class="panel">
 
-      <h2>📊 ATTENDANCE OVERVIEW</h2>
+      <h2>🏁 RSVP OVERVIEW</h2>
 
       <div class="stats">
 
         <div class="stat">
-          <strong id="total">0</strong>
-          <span>TOTAL RESPONSES</span>
+          <strong id="totalCount">0</strong>
+          <span>TOTAL</span>
         </div>
 
         <div class="stat">
-          <strong id="yes" class="green">0</strong>
-          <span>CONFIRMED</span>
+          <strong id="yesCount">0</strong>
+          <span>ATTENDING</span>
         </div>
 
         <div class="stat">
-          <strong id="no" class="red">0</strong>
+          <strong id="noCount">0</strong>
           <span>NOT ATTENDING</span>
         </div>
 
-        <div class="stat">
-          <strong id="rate">0%</strong>
-          <span>CONFIRMATION RATE</span>
-        </div>
+      </div>
+
+      <div class="toolbar">
+
+        <button type="button" id="refreshBtn">
+          ↻ REFRESH
+        </button>
+
+        <button type="button" class="secondary" id="exportBtn">
+          ↓ EXPORT CSV
+        </button>
 
       </div>
 
-    </div>
+      <div class="message" id="dashboardMessage" role="status"></div>
 
-    <!-- GUEST LIST -->
+    </div>
 
     <div class="panel">
 
-      <h2>🏎️ GUEST LIST</h2>
+      <h2>👥 GUEST RESPONSES</h2>
 
-      <div class="top-actions">
-
-        <button
-          type="button"
-          id="refreshButton"
-        >
-          🔄 REFRESH
-        </button>
-
-        <button
-          type="button"
-          id="downloadButton"
-        >
-          📥 DOWNLOAD CSV
-        </button>
-
+      <div class="guest-list" id="guestList">
+        <div class="empty">Loading responses...</div>
       </div>
-
-      <div id="guestList">
-        <p class="small">Waiting for guest information...</p>
-      </div>
-
-      <p class="small" id="lastUpdated"></p>
 
     </div>
 
-    <!-- LOGOUT -->
-
-    <button
-      type="button"
-      id="logoutButton"
-    >
+    <button type="button" id="logoutBtn">
       LOG OUT
     </button>
 
-  </div>
+  </section>
 
   <div class="checkered"></div>
 
@@ -448,436 +397,364 @@ button:disabled {
 </div>
 
 <script>
+"use strict";
 
-// ==================================
-// GOOGLE APPS SCRIPT CONNECTION
-// ==================================
+/* USE THE SAME URL AS index.html */
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBDQmskEiF0z9T-VSzIwGGiQfAQklAlX7zvJNqVqGf0P5i3pnRIjGXvMu64QIkgh2C/exec";
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbyBDQmskEiF0z9T-VSzIwGGiQfAQklAlX7zvJNqVqGf0P5i3pnRIjGXvMu64QIkgh2C/exec";
+
+/* ADMIN PASSWORD */
 
 let adminPassword = "";
-let guestData = [];
+let guestResponses = [];
 
-// ==================================
-// PASSWORD VISIBILITY
-// ==================================
+/* ELEMENTS */
 
-function togglePasswordVisibility() {
+const loginPanel = document.getElementById("loginPanel");
+const dashboard = document.getElementById("dashboard");
+const passwordInput = document.getElementById("password");
+const loginBtn = document.getElementById("loginBtn");
+const loginMessage = document.getElementById("loginMessage");
+const dashboardMessage = document.getElementById("dashboardMessage");
+const guestList = document.getElementById("guestList");
 
-  const password = document.getElementById("password");
-  const eye = document.getElementById("togglePassword");
-
-  if (password.type === "password") {
-
-    password.type = "text";
-    eye.textContent = "🙈";
-    eye.setAttribute("aria-label", "Hide password");
-
-  } else {
-
-    password.type = "password";
-    eye.textContent = "👁";
-    eye.setAttribute("aria-label", "Show password");
-
-  }
-
-}
-
-// ==================================
-// GOOGLE APPS SCRIPT REQUEST
-// ==================================
+/* JSONP REQUEST */
 
 function callScript(params, callback) {
 
   const callbackName =
-    "callback_" + Date.now() + "_" +
-    Math.random().toString(36).slice(2);
+    "adminCallback_" +
+    Date.now() +
+    "_" +
+    Math.random().toString(36).substring(2, 9);
 
   const script = document.createElement("script");
 
   let completed = false;
-
-  params.callback = callbackName;
+  let timeout;
 
   function cleanup() {
+    clearTimeout(timeout);
 
-    delete window[callbackName];
-    script.remove();
+    try {
+      delete window[callbackName];
+    } catch (error) {
+      window[callbackName] = undefined;
+    }
 
+    script.onerror = null;
+
+    if (script.parentNode) {
+      script.parentNode.removeChild(script);
+    }
   }
 
-  const timeout = setTimeout(function() {
-
+  function finish(data) {
     if (completed) return;
 
     completed = true;
     cleanup();
-
-    callback({
-      success: false,
-      message: "Connection timed out. Check your internet or Apps Script deployment."
-    });
-
-  }, 20000);
+    callback(data);
+  }
 
   window[callbackName] = function(data) {
-
-    if (completed) return;
-
-    completed = true;
-
-    clearTimeout(timeout);
-    cleanup();
-
-    callback(data);
-
+    finish(data);
   };
 
   script.onerror = function() {
-
-    if (completed) return;
-
-    completed = true;
-
-    clearTimeout(timeout);
-    cleanup();
-
-    callback({
+    finish({
       success: false,
-      message: "Unable to connect to Google Apps Script."
+      message: "Unable to connect to Google Apps Script. Check the deployment URL and permissions."
     });
-
   };
 
-  script.src =
-    SCRIPT_URL + "?" +
-    new URLSearchParams(params).toString();
+  const query = new URLSearchParams({
+    ...params,
+    callback: callbackName,
+    _t: Date.now()
+  });
+
+  script.src = SCRIPT_URL + "?" + query.toString();
+  script.async = true;
+
+  timeout = setTimeout(function() {
+    finish({
+      success: false,
+      message: "The server did not respond. Please try again."
+    });
+  }, 20000);
 
   document.body.appendChild(script);
-
 }
 
-// ==================================
-// ADMIN LOGIN
-// ==================================
+/* PASSWORD VISIBILITY */
+
+document.getElementById("togglePassword")
+.addEventListener("click", function() {
+
+  const isHidden = passwordInput.type === "password";
+
+  passwordInput.type = isHidden ? "text" : "password";
+
+  this.textContent = isHidden ? "🐵" : "🙈";
+
+  this.setAttribute(
+    "aria-label",
+    isHidden ? "Hide password" : "Show password"
+  );
+});
+
+/* LOGIN */
 
 function login() {
 
-  const password =
-    document.getElementById("password").value;
+  const enteredPassword = passwordInput.value.trim();
 
-  const message =
-    document.getElementById("message");
-
-  const loginButton =
-    document.getElementById("loginButton");
-
-  if (!password.trim()) {
-
-    message.className = "error";
-    message.textContent = "✕ Please enter your password.";
-
+  if (!enteredPassword) {
+    loginMessage.className = "message error";
+    loginMessage.textContent = "Please enter your password.";
     return;
-
   }
 
-  if (!SCRIPT_URL || !SCRIPT_URL.includes("/exec")) {
-
-    message.className = "error";
-    message.textContent = "✕ Invalid Apps Script URL.";
-
-    return;
-
-  }
-
-  loginButton.disabled = true;
-  loginButton.textContent = "VERIFYING PASSWORD...";
-
-  message.className = "";
-  message.textContent = "Checking admin credentials...";
+  loginBtn.disabled = true;
+  loginBtn.textContent = "CONNECTING...";
+  loginMessage.className = "message";
+  loginMessage.textContent = "Connecting to the RSVP database...";
 
   callScript({
-
     action: "list",
-    password: password
-
+    password: enteredPassword
   }, function(data) {
 
-    loginButton.disabled = false;
-    loginButton.textContent = "ACCESS DASHBOARD 🏁";
+    loginBtn.disabled = false;
+    loginBtn.textContent = "ACCESS DASHBOARD 🏁";
 
     if (data && data.success === true) {
 
-      adminPassword = password;
+      adminPassword = enteredPassword;
 
-      document.getElementById("loginPanel").style.display = "none";
+      loginPanel.classList.add("hidden");
+      dashboard.classList.remove("hidden");
 
-      document.getElementById("dashboard").style.display = "block";
+      passwordInput.value = "";
 
-      displayGuests(data.responses || []);
-
-    } else {
-
-      message.className = "error";
-
-      message.textContent =
-        "✕ " +
-        (data && data.message
-          ? data.message
-          : "Incorrect password or server rejected the request.");
-
-    }
-
-  });
-
-}
-
-// ==================================
-// LOAD GUESTS
-// ==================================
-
-function loadGuests() {
-
-  const list =
-    document.getElementById("guestList");
-
-  const refreshButton =
-    document.getElementById("refreshButton");
-
-  list.textContent = "Loading guests...";
-
-  refreshButton.disabled = true;
-  refreshButton.textContent = "LOADING...";
-
-  callScript({
-
-    action: "list",
-    password: adminPassword
-
-  }, function(data) {
-
-    refreshButton.disabled = false;
-    refreshButton.textContent = "🔄 REFRESH";
-
-    if (data && data.success === true) {
-
-      displayGuests(data.responses || []);
+      displayResponses(data.responses || []);
 
     } else {
 
-      list.textContent =
+      loginMessage.className = "message error";
+
+      loginMessage.textContent =
         data && data.message
           ? data.message
-          : "Unable to load guest list. Please try again.";
+          : "Login failed. Please check your password and try again.";
 
     }
 
   });
-
 }
 
-// ==================================
-// DISPLAY GUESTS AND STATISTICS
-// ==================================
+loginBtn.addEventListener("click", login);
 
-function displayGuests(responses) {
-
-  guestData = responses;
-
-  const yes = responses.filter(function(r) {
-
-    return String(r.attendance).toUpperCase() === "YES";
-
-  }).length;
-
-  const no = responses.filter(function(r) {
-
-    return String(r.attendance).toUpperCase() === "NO";
-
-  }).length;
-
-  document.getElementById("total").textContent =
-    responses.length;
-
-  document.getElementById("yes").textContent = yes;
-
-  document.getElementById("no").textContent = no;
-
-  const rate = responses.length
-    ? Math.round((yes / responses.length) * 100)
-    : 0;
-
-  document.getElementById("rate").textContent =
-    rate + "%";
-
-  const list =
-    document.getElementById("guestList");
-
-  list.innerHTML = "";
-
-  if (!responses.length) {
-
-    list.textContent = "No RSVPs yet.";
-
-  } else {
-
-    responses.forEach(function(guest) {
-
-      const item = document.createElement("div");
-
-      item.className = "guest";
-
-      const name = document.createElement("span");
-
-      name.textContent =
-        guest.name || "Unnamed guest";
-
-      const status = document.createElement("span");
-
-      const attendance =
-        String(guest.attendance || "").toUpperCase();
-
-      status.className =
-        "status " + (attendance === "YES" ? "yes" : "no");
-
-      status.textContent = attendance || "UNKNOWN";
-
-      item.append(name, status);
-
-      list.appendChild(item);
-
-    });
-
+passwordInput.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    login();
   }
+});
 
-  document.getElementById("lastUpdated").textContent =
-    "Last updated: " + new Date().toLocaleString();
+/* DISPLAY GUEST RESPONSES */
 
-}
+function displayResponses(responses) {
 
-// ==================================
-// DOWNLOAD CSV
-// ==================================
+  guestResponses = Array.isArray(responses) ? responses : [];
 
-function downloadCSV() {
+  const total = guestResponses.length;
 
-  if (!guestData.length) {
+  const yes = guestResponses.filter(function(item) {
+    return String(item.attendance).toUpperCase() === "YES";
+  }).length;
 
-    alert("There are no responses to download.");
+  const no = guestResponses.filter(function(item) {
+    return String(item.attendance).toUpperCase() === "NO";
+  }).length;
+
+  document.getElementById("totalCount").textContent = total;
+  document.getElementById("yesCount").textContent = yes;
+  document.getElementById("noCount").textContent = no;
+
+  guestList.innerHTML = "";
+
+  if (total === 0) {
+
+    guestList.innerHTML =
+      '<div class="empty">No RSVP responses yet.</div>';
 
     return;
+  }
 
+  guestResponses.forEach(function(item) {
+
+    const guest = document.createElement("div");
+    guest.className = "guest";
+
+    const name = document.createElement("div");
+    name.className = "guest-name";
+    name.textContent = item.name || "Unnamed guest";
+
+    const status = document.createElement("div");
+
+    const attendance =
+      String(item.attendance || "").toUpperCase();
+
+    status.className =
+      "guest-status " +
+      (attendance === "YES" ? "attending" : "not-attending");
+
+    status.textContent =
+      attendance === "YES"
+        ? "✓ ATTENDING"
+        : "✕ NOT ATTENDING";
+
+    const time = document.createElement("div");
+    time.className = "guest-time";
+
+    if (item.timestamp) {
+      const date = new Date(item.timestamp);
+
+      time.textContent = isNaN(date.getTime())
+        ? String(item.timestamp)
+        : date.toLocaleString();
+    } else {
+      time.textContent = "";
+    }
+
+    guest.appendChild(name);
+    guest.appendChild(status);
+    guest.appendChild(time);
+
+    guestList.appendChild(guest);
+
+  });
+}
+
+/* REFRESH RESPONSES */
+
+function refreshResponses() {
+
+  const refreshBtn = document.getElementById("refreshBtn");
+
+  refreshBtn.disabled = true;
+  refreshBtn.textContent = "LOADING...";
+
+  dashboardMessage.className = "message";
+  dashboardMessage.textContent = "Updating guest responses...";
+
+  callScript({
+    action: "list",
+    password: adminPassword
+  }, function(data) {
+
+    refreshBtn.disabled = false;
+    refreshBtn.textContent = "↻ REFRESH";
+
+    if (data && data.success === true) {
+
+      displayResponses(data.responses || []);
+
+      dashboardMessage.className = "message success";
+      dashboardMessage.textContent = "Guest list updated successfully.";
+
+    } else {
+
+      dashboardMessage.className = "message error";
+      dashboardMessage.textContent =
+        data && data.message
+          ? data.message
+          : "Unable to refresh responses.";
+
+    }
+
+  });
+}
+
+document.getElementById("refreshBtn")
+.addEventListener("click", refreshResponses);
+
+/* EXPORT CSV */
+
+document.getElementById("exportBtn")
+.addEventListener("click", function() {
+
+  if (guestResponses.length === 0) {
+    dashboardMessage.className = "message error";
+    dashboardMessage.textContent = "There are no responses to export.";
+    return;
   }
 
   const rows = [
-
-    ["Guest Name", "Attendance"],
-
-    ...guestData.map(function(g) {
-
-      return [g.name, g.attendance];
-
-    })
-
+    ["Timestamp", "Guest Name", "Attendance"]
   ];
 
+  guestResponses.forEach(function(item) {
+
+    rows.push([
+      item.timestamp || "",
+      item.name || "",
+      item.attendance || ""
+    ]);
+
+  });
+
+  function escapeCSV(value) {
+    return '"' + String(value).replace(/"/g, '""') + '"';
+  }
+
   const csv = rows.map(function(row) {
-
-    return row.map(function(value) {
-
-      return '"' +
-        String(value || "").replace(/"/g, '""') +
-        '"';
-
-    }).join(",");
-
-  }).join("\n");
+    return row.map(escapeCSV).join(",");
+  }).join("\r\n");
 
   const blob = new Blob(
-
     ["\uFEFF" + csv],
-
     { type: "text/csv;charset=utf-8;" }
-
   );
 
   const url = URL.createObjectURL(blob);
-
   const link = document.createElement("a");
 
   link.href = url;
-
-  link.download = "guest-attendance.csv";
+  link.download = "Race_Day_RSVP_Responses.csv";
 
   document.body.appendChild(link);
-
   link.click();
-
-  link.remove();
+  document.body.removeChild(link);
 
   URL.revokeObjectURL(url);
 
-}
+});
 
-// ==================================
-// LOGOUT
-// ==================================
+/* LOG OUT */
 
-function logout() {
+document.getElementById("logoutBtn")
+.addEventListener("click", function() {
 
   adminPassword = "";
-  guestData = [];
+  guestResponses = [];
 
-  document.getElementById("dashboard").style.display = "none";
+  dashboard.classList.add("hidden");
+  loginPanel.classList.remove("hidden");
 
-  document.getElementById("loginPanel").style.display = "block";
+  loginMessage.className = "message";
+  loginMessage.textContent = "";
 
-  document.getElementById("password").value = "";
+  dashboardMessage.textContent = "";
+  guestList.innerHTML = "";
 
-  document.getElementById("password").type = "password";
+  document.getElementById("totalCount").textContent = "0";
+  document.getElementById("yesCount").textContent = "0";
+  document.getElementById("noCount").textContent = "0";
 
-  document.getElementById("togglePassword").textContent = "👁";
-
-  document.getElementById("togglePassword").setAttribute(
-    "aria-label",
-    "Show password"
-  );
-
-  document.getElementById("message").textContent = "";
-
-  document.getElementById("message").className = "";
-
-}
-
-// ==================================
-// BUTTON EVENTS
-// ==================================
-
-document.getElementById("togglePassword")
-  .addEventListener("click", togglePasswordVisibility);
-
-document.getElementById("loginButton")
-  .addEventListener("click", login);
-
-document.getElementById("refreshButton")
-  .addEventListener("click", loadGuests);
-
-document.getElementById("downloadButton")
-  .addEventListener("click", downloadCSV);
-
-document.getElementById("logoutButton")
-  .addEventListener("click", logout);
-
-// ENTER KEY LOGIN
-
-document.getElementById("password")
-  .addEventListener("keydown", function(e) {
-
-    if (e.key === "Enter") {
-      login();
-    }
-
-  });
+});
 
 </script>
 
